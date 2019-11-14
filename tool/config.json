@@ -1,0 +1,9 @@
+{
+    "local_geo_address": "Class Room",
+    "remote_geo_address": "Dorm",
+    "local_interface": "ens0",
+    "remote_ip": "114.5.1.4",
+    "remote_port": 1919,
+    "ping_count": 8,
+    "nmap_timeout": 60
+}
