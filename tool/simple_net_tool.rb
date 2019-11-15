@@ -15,15 +15,15 @@ class SimpleNetTool
     # Output sample:
     # 2 packets transmitted, 0 received, +2 errors, 100% packet loss, time 14ms
     ping_raw = `ping -I #{@interface} -n #{@ip} -c #{@count} -t 1 -q |tail -n2 |head -n1`
-    ping_errors = ping_raw.scan(/\d+/).map(&:to_i)[2]
-    return false if ping_errors == @count
-    true
+    ping_received = ping_raw.scan(/\d+/).map(&:to_i)[1]
+    return true if ping_received > 0
+    false
   end
 
   def network_layer_reachable?
     ping_raw = `ping -I #{@interface} -n #{@ip} -c #{@count} -t 64 -q |tail -n2 |head -n1`
-    ping_errors = ping_raw.scan(/\d+/).map(&:to_i)[2]
-    return true if ping_errors < @count
+    ping_received = ping_raw.scan(/\d+/).map(&:to_i)[1]
+    return true if ping_received > 0
     
     puts "ICMP failed, try TCP"
     tcp_raw = `nmap #{@ip} -p #{@port} -e #{@interface} --host-timeout #{@timeout} -Pn`
